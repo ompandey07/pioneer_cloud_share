@@ -1,0 +1,775 @@
+{% load custom_filters %}
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easy Share</title>
+    <link rel="shortcut icon" href="{% static 'Logo.png' %}" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+    rel="stylesheet"
+/>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Kaushan+Script&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f7ff',
+                            100: '#e0edff',
+                            200: '#b3d4ff',
+                            300: '#80b8ff',
+                            400: '#4d9bff',
+                            500: '#1a80ff',
+                            600: '#1466cc',
+                            700: '#0f4d99',
+                            800: '#0a3366',
+                            900: '#072033',
+                        },
+                        secondary: {
+                            50: '#f0faff',
+                            100: '#e0f3ff',
+                            200: '#b3e1ff',
+                            300: '#80cbff',
+                            400: '#4db4ff',
+                            500: '#1a9cff',
+                            600: '#147ccc',
+                            700: '#0f5f99',
+                            800: '#0a4266',
+                            900: '#073233',
+                        },
+                        accent: {
+                            50: '#f2f6ff',
+                            100: '#e6edff',
+                            200: '#c7d6ff',
+                            300: '#a3bcff',
+                            400: '#7a9cff',
+                            500: '#517cff',
+                            600: '#4163cc',
+                            700: '#314a99',
+                            800: '#213266',
+                            900: '#152033',
+                        },
+                        neutral: {
+                            50: '#fafafa',
+                            100: '#f5f5f5',
+                            200: '#e5e5e5',
+                            300: '#d4d4d4',
+                            400: '#a3a3a3',
+                            500: '#737373',
+                            600: '#525252',
+                            700: '#404040',
+                            800: '#262626',
+                            900: '#171717',
+                        }
+                    },
+                    fontFamily: {
+                        'sans': ['Space Grotesk', 'system-ui', 'sans-serif'],
+                        'script': ['Dancing Script', 'cursive'],
+                        'display': ['Kaushan Script', 'cursive'],
+                        'mono': ['JetBrains Mono', 'monospace'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                        'scale-in': 'scaleIn 0.5s ease-out',
+                        'float': 'float 3s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                        'bounce-slow': 'bounce 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(30px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        scaleIn: {
+                            '0%': { transform: 'scale(0.9)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 20px rgba(26, 128, 255, 0.3)' },
+                            '100%': { boxShadow: '0 0 30px rgba(26, 128, 255, 0.6)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #F1F5F9 0%, #E0E7FF 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .pl {
+            width: 6em;
+            height: 6em;
+        }
+
+        .pl__ring {
+            animation: ringA 2s linear infinite;
+        }
+
+        .pl__ring--a { stroke: #1a80ff; }
+        .pl__ring--b { animation-name: ringB; stroke: #4d9bff; }
+        .pl__ring--c { animation-name: ringC; stroke: #80b8ff; }
+        .pl__ring--d { animation-name: ringD; stroke: #b3e1ff; }
+
+        @keyframes ringA {
+            from, 4% { stroke-dasharray: 0 660; stroke-width: 20; stroke-dashoffset: -330; }
+            12% { stroke-dasharray: 60 600; stroke-width: 30; stroke-dashoffset: -335; }
+            32% { stroke-dasharray: 60 600; stroke-width: 30; stroke-dashoffset: -595; }
+            40%, 54% { stroke-dasharray: 0 660; stroke-width: 20; stroke-dashoffset: -660; }
+            62% { stroke-dasharray: 60 600; stroke-width: 30; stroke-dashoffset: -665; }
+            82% { stroke-dasharray: 60 600; stroke-width: 30; stroke-dashoffset: -925; }
+            90%, to { stroke-dasharray: 0 660; stroke-width: 20; stroke-dashoffset: -990; }
+        }
+
+        @keyframes ringB {
+            from, 12% { stroke-dasharray: 0 220; stroke-width: 20; stroke-dashoffset: -110; }
+            20% { stroke-dasharray: 20 200; stroke-width: 30; stroke-dashoffset: -115; }
+            40% { stroke-dasharray: 20 200; stroke-width: 30; stroke-dashoffset: -195; }
+            48%, 62% { stroke-dasharray: 0 220; stroke-width: 20; stroke-dashoffset: -220; }
+            70% { stroke-dasharray: 20 200; stroke-width: 30; stroke-dashoffset: -225; }
+            90% { stroke-dasharray: 20 200; stroke-width: 30; stroke-dashoffset: -305; }
+            98%, to { stroke-dasharray: 0 220; stroke-width: 20; stroke-dashoffset: -330; }
+        }
+
+        @keyframes ringC {
+            from { stroke-dasharray: 0 440; stroke-width: 20; stroke-dashoffset: 0; }
+            8% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -5; }
+            28% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -175; }
+            36%, 58% { stroke-dasharray: 0 440; stroke-width: 20; stroke-dashoffset: -220; }
+            66% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -225; }
+            86% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -395; }
+            94%, to { stroke-dasharray: 0 440; stroke-width: 20; stroke-dashoffset: -440; }
+        }
+
+        @keyframes ringD {
+            from, 8% { stroke-dasharray: 0 440; stroke-width: 20; stroke-dashoffset: 0; }
+            16% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -5; }
+            36% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -175; }
+            44%, 50% { stroke-dasharray: 0 440; stroke-width: 20; stroke-dashoffset: -220; }
+            58% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -225; }
+            78% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -395; }
+            86%, to { stroke-dasharray: 0 440; stroke-width: 20; stroke-dashoffset: -440; }
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #f0f7ff 0%, #f0faff 50%, #f2f6ff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-pattern {
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(26, 128, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(26, 156, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(81, 124, 255, 0.1) 0%, transparent 50%);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .feature-card {
+            background: linear-gradient(145deg, #ffffff 0%, #fafafa 100%);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #1a80ff, #1466cc, #1a9cff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pattern-bg {
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(26, 128, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(26, 156, 255, 0.1) 0%, transparent 50%);
+        }
+
+        .nav-blur {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal-on-scroll.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .floating-element {
+            position: absolute;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(2) { animation-delay: -2s; }
+        .floating-element:nth-child(3) { animation-delay: -4s; }
+
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: linear-gradient(180deg, #f0f7ff 0%, #f0faff 50%, #f2f6ff 100%);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #1a80ff, #1466cc);
+            border-radius: 10px;
+            border: 2px solid #f0f7ff;
+            transition: all 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #1466cc, #0f4d99);
+            transform: scale(1.1);
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: #f0f7ff;
+        }
+
+        * {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" fill="%231a80ff" fill-opacity="0.3"/><circle cx="12" cy="12" r="3" fill="%231a80ff"/></svg>'), auto;
+        }
+
+        a, button, .cursor-pointer {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" fill="%231466cc" fill-opacity="0.4"/><circle cx="12" cy="12" r="4" fill="%231466cc"/></svg>'), pointer;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f7ff 0%, #f0faff 25%, #f2f6ff 50%, #f0f7ff 75%, #f0faff 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glass-card, .feature-card {
+            box-shadow: 
+                0 8px 32px rgba(26, 128, 255, 0.1),
+                0 4px 16px rgba(26, 156, 255, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        .feature-card:hover {
+            box-shadow: 
+                0 20px 60px rgba(26, 128, 255, 0.15),
+                0 10px 30px rgba(26, 156, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        }
+
+        * {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-blur a:hover, button:hover, .social-icon:hover {
+            transform: translateY(-2px) scale(1.05);
+            filter: drop-shadow(0 4px 8px rgba(26, 128, 255, 0.3));
+        }
+
+        .stats-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* New Table Styles */
+        .file-icon {
+            transition: all 0.3s ease;
+        }
+
+        .file-row:hover .file-icon {
+            transform: scale(1.1);
+        }
+
+        .download-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(26, 128, 255, 0.3);
+        }
+
+        .table-header-icon {
+            transition: all 0.3s ease;
+        }
+
+        .table-header:hover .table-header-icon {
+            transform: rotate(360deg);
+        }
+
+        .file-row {
+            transition: all 0.3s ease;
+        }
+
+        .file-row:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="font-sans text-neutral-800 pattern-bg">
+    <div class="preloader" id="preloader">
+        <svg class="pl" width="240" height="240" viewBox="0 0 240 240">
+            <circle class="pl__ring pl__ring--a" cx="120" cy="120" r="105" fill="none" stroke="#000" stroke-width="20" stroke-dasharray="0 660" stroke-dashoffset="-330" stroke-linecap="round"></circle>
+            <circle class="pl__ring pl__ring--b" cx="120" cy="120" r="35" fill="none" stroke="#000" stroke-width="20" stroke-dasharray="0 220" stroke-dashoffset="-110" stroke-linecap="round"></circle>
+            <circle class="pl__ring pl__ring--c" cx="85" cy="120" r="70" fill="none" stroke="#000" stroke-width="20" stroke-dasharray="0 440" stroke-linecap="round"></circle>
+            <circle class="pl__ring pl__ring--d" cx="155" cy="120" r="70" fill="none" stroke="#000" stroke-width="20" stroke-dasharray="0 440" stroke-linecap="round"></circle>
+        </svg>
+    </div>
+
+    <nav class="fixed top-0 w-full z-50 nav-blur transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="{% url 'index_view' %}" class="flex items-center space-x-3 group">
+                    <img src="{% static 'Logo.png' %}" alt="Easy Share" class="h-12 transition-transform group-hover:scale-110">
+                    <span class="text-2xl font-bold text-gradient">Easy Share</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-8">
+                </div>
+                <a href="#" class="text-primary-600 px-6 py-3 rounded-full font-medium hover:text-primary-700 transition-all duration-300 transform hover:scale-105">
+                    <i class="fas fa-user text-xl"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-gradient hero-pattern min-h-screen relative flex items-center justify-center overflow-hidden">
+        <!-- Floating Background Elements -->
+        <div class="floating-element top-20 left-10 w-20 h-20 bg-primary-200/30 rounded-full"></div>
+        <div class="floating-element top-40 right-20 w-16 h-16 bg-secondary-200/30 rounded-full"></div>
+        <div class="floating-element bottom-40 left-20 w-24 h-24 bg-accent-200/30 rounded-full"></div>
+        <div class="floating-element top-60 left-1/2 w-12 h-12 bg-primary-300/40 rounded-full"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center py-32 relative z-10">
+            <div class="text-center lg:text-left animate-fade-in">
+                <div class="inline-flex items-center px-4 py-2 bg-white/60 backdrop-blur-md rounded-full text-sm font-medium text-primary-600 mb-6">
+                    <span class="w-2 h-2 bg-secondary-500 rounded-full mr-2 animate-pulse"></span>
+                    Seamless File Sharing
+                </div>
+                <h1 class="text-6xl lg:text-8xl font-display font-bold mb-6">
+                    <span class="text-gradient">Easy Share</span>
+                </h1>
+                <h2 class="text-2xl lg:text-3xl text-neutral-700 mb-8 font-light">
+                    Where simplicity meets <span class="font-medium text-primary-600">efficient sharing</span>
+                </h2>
+                
+                <!-- Stats Section -->
+                <div class="grid grid-cols-3 gap-4 mb-8">
+                    <div class="stats-card rounded-2xl p-4 text-center">
+                        <div class="text-2xl font-bold text-primary-600">99%</div>
+                        <div class="text-sm text-neutral-600">Uptime</div>
+                    </div>
+                    <div class="stats-card rounded-2xl p-4 text-center">
+                        <div class="text-2xl font-bold text-secondary-600">99%</div>
+                        <div class="text-sm text-neutral-600">Speed Ratio</div>
+                    </div>
+                    <div class="stats-card rounded-2xl p-4 text-center">
+                        <div class="text-2xl font-bold text-accent-600">5GB</div>
+                        <div class="text-sm text-neutral-600">Max Size</div>
+                    </div>
+                </div>
+
+                <!-- Feature Pills -->
+                <div class="flex flex-wrap justify-center lg:justify-start gap-3 mb-8">
+                    <div class="px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-medium">
+                        <i class="fas fa-bolt mr-1"></i> Lightning Fast
+                    </div>
+                    <div class="px-4 py-2 bg-secondary-100 text-secondary-700 rounded-full text-sm font-medium">
+                        <i class="fas fa-shield-alt mr-1"></i> Secure
+                    </div>
+                    <div class="px-4 py-2 bg-accent-100 text-accent-700 rounded-full text-sm font-medium">
+                        <i class="fas fa-cloud mr-1"></i> Cloud Storage
+                    </div>
+                </div>
+                
+                <div class="flex justify-center lg:justify-start space-x-4">
+                    <a href="#" class="bg-gradient-to-r from-primary-500 to-primary-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:from-primary-600 hover:to-primary-700 transition-all duration-300 transform hover:scale-105 shadow-xl animate-glow">
+                        Explore Us
+                    </a>
+                    <a href="#menu" class="bg-white/80 backdrop-blur-md text-primary-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-white transition-all duration-300 transform hover:scale-105 shadow-lg border border-primary-200">
+                        View Files
+                    </a>
+                </div>
+                
+                <div class="mt-8 flex items-center justify-center lg:justify-start space-x-4">
+                    <div class="text-2xl font-display font-bold text-gradient" id="realtime-clock"></div>
+                    <div class="text-neutral-500">|</div>
+                    <div class="text-lg text-neutral-600">Live Server Time</div>
+                </div>
+            </div>
+            
+            <div class="relative animate-scale-in">
+                <div class="relative">
+                    <div class="absolute inset-0 bg-gradient-to-br from-primary-400/30 to-secondary-400/30 rounded-3xl transform rotate-6 animate-float"></div>
+                    <div class="relative bg-white p-6 rounded-3xl shadow-2xl">
+                        <img src="https://cdn.dribbble.com/userupload/21343645/file/original-6221f2f8b040ddd87d61d25b5583b9e6.gif" alt="Easy Share Platform" class="w-full h-96 object-cover rounded-2xl">
+                        <div class="absolute -top-4 -right-4 bg-accent-500 text-white px-4 py-2 rounded-full font-semibold shadow-lg animate-pulse-slow">
+                            <i class="fas fa-bolt mr-1"></i>
+                            Fast & Secure
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="absolute -top-8 -left-8 w-16 h-16 bg-secondary-100 rounded-full flex items-center justify-center animate-bounce-slow">
+                    <i class="fas fa-cloud text-secondary-600 text-xl"></i>
+                </div>
+                <div class="absolute -bottom-8 -right-8 w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center animate-float" style="animation-delay: 1s;">
+                    <i class="fas fa-lock text-primary-600"></i>
+                </div>
+                <div class="absolute top-1/2 -left-6 w-10 h-10 bg-accent-100 rounded-full flex items-center justify-center animate-pulse-slow">
+                    <i class="fas fa-share text-accent-600 text-sm"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="scroll-indicator">
+            <div class="w-6 h-10 border-2 border-neutral-400 rounded-full flex justify-center">
+                <div class="w-1 h-3 bg-neutral-400 rounded-full mt-2 animate-bounce"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-gradient-to-br from-neutral-50 to-neutral-100 reveal-on-scroll" id="menu">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-script font-bold text-neutral-800 mb-6">
+                    New Exe And <span class="text-gradient">Useful Files for Download</span>
+                </h2>
+                <p class="text-xl text-neutral-600 max-w-3xl mx-auto">
+                    Discover our curated selection of executable files and tools for seamless sharing
+                </p>
+            </div>
+            {% if files %}
+                <div class="overflow-x-auto shadow-2xl rounded-2xl">
+                    <table class="min-w-full bg-white rounded-2xl overflow-hidden">
+                        <thead>
+                            <tr class="bg-gradient-to-r from-primary-500 to-primary-600 text-white text-left">
+                                <th class="py-4 px-6 table-header">
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fas fa-hashtag table-header-icon"></i>
+                                        <span class="font-semibold">SN</span>
+                                    </div>
+                                </th>
+                                <th class="py-4 px-6 table-header">
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fas fa-file-alt table-header-icon"></i>
+                                        <span class="font-semibold">File</span>
+                                    </div>
+                                </th>
+                                <th class="py-4 px-6 table-header hidden md:table-cell">
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fas fa-calendar-alt table-header-icon"></i>
+                                        <span class="font-semibold">Uploaded At</span>
+                                    </div>
+                                </th>
+                                <th class="py-4 px-6 table-header">
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fas fa-download table-header-icon"></i>
+                                        <span class="font-semibold">Download</span>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            {% for file in files %}
+                            <tr class="file-row hover:bg-gradient-to-r hover:from-primary-50 hover:to-secondary-50 transition-all duration-300" data-filename="{{ file.file.name|slice:'8:' }}">
+                                <td class="py-4 px-6">
+                                    <span class="inline-flex items-center justify-center w-8 h-8 bg-primary-100 text-primary-600 rounded-full font-semibold">{{ forloop.counter }}</span>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center space-x-3">
+                                        <i class="file-icon text-2xl fas fa-file text-gray-400"></i>
+                                        <div>
+                                            <div class="font-medium text-gray-900">{{ file.file.name|slice:"8:" }}</div>
+                                            <div class="text-sm text-gray-500 file-description">File</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 hidden md:table-cell">
+                                    <div class="flex items-center space-x-2 text-gray-600">
+                                        <i class="fas fa-clock text-sm"></i>
+                                        <span>{{ file.uploaded_at|date:"M d, Y H:i" }}</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <a href="{{ file.file.url }}" download class="download-btn bg-gradient-to-r from-primary-500 to-primary-600 text-white px-4 py-2 rounded-lg font-medium hover:from-primary-600 hover:to-primary-700 flex items-center space-x-2 inline-flex transition-all duration-300">
+                                        <i class="fas fa-download"></i>
+                                        <span>Download</span>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center py-16">
+                    <div class="max-w-sm mx-auto">
+                        <i class="fas fa-folder-open text-6xl text-gray-300 mb-4"></i>
+                        <h3 class="text-xl font-medium text-gray-900 mb-2">No files available</h3>
+                        <p class="text-gray-500">No files available for download right now. Check back later!</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <footer class="bg-white py-16 relative overflow-hidden border-t border-neutral-200">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+            <div class="text-center">
+                <a href="#" class="text-2xl font-display font-bold text-gradient">Powered By Pioneer Software</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Function to get file icon based on extension
+        function getFileIcon(filename) {
+            if (!filename) return 'fas fa-file text-gray-400';
+            
+            const extension = filename.split('.').pop().toLowerCase();
+            const iconMap = {
+                'exe': 'fas fa-file-code text-blue-500',
+                'msi': 'fas fa-file-code text-blue-600',
+                'bat': 'fas fa-file-code text-blue-500',
+                'cmd': 'fas fa-file-code text-blue-500',
+                'pdf': 'fas fa-file-pdf text-red-500',
+                'doc': 'fas fa-file-word text-blue-700',
+                'docx': 'fas fa-file-word text-blue-700',
+                'xls': 'fas fa-file-excel text-green-600',
+                'xlsx': 'fas fa-file-excel text-green-600',
+                'ppt': 'fas fa-file-powerpoint text-orange-600',
+                'pptx': 'fas fa-file-powerpoint text-orange-600',
+                'zip': 'fas fa-file-archive text-yellow-600',
+                'rar': 'fas fa-file-archive text-yellow-600',
+                '7z': 'fas fa-file-archive text-yellow-600',
+                'tar': 'fas fa-file-archive text-yellow-600',
+                'gz': 'fas fa-file-archive text-yellow-600',
+                'png': 'fas fa-file-image text-green-500',
+                'jpg': 'fas fa-file-image text-green-500',
+                'jpeg': 'fas fa-file-image text-green-500',
+                'gif': 'fas fa-file-image text-green-500',
+                'bmp': 'fas fa-file-image text-green-500',
+                'svg': 'fas fa-file-image text-green-500',
+                'mp4': 'fas fa-file-video text-purple-500',
+                'avi': 'fas fa-file-video text-purple-500',
+                'mov': 'fas fa-file-video text-purple-500',
+                'wmv': 'fas fa-file-video text-purple-500',
+                'mkv': 'fas fa-file-video text-purple-500',
+                'mp3': 'fas fa-file-audio text-pink-500',
+                'wav': 'fas fa-file-audio text-pink-500',
+                'flac': 'fas fa-file-audio text-pink-500',
+                'aac': 'fas fa-file-audio text-pink-500',
+                'txt': 'fas fa-file-alt text-gray-500',
+                'rtf': 'fas fa-file-alt text-gray-500',
+                'html': 'fas fa-file-code text-orange-500',
+                'htm': 'fas fa-file-code text-orange-500',
+                'css': 'fas fa-file-code text-blue-400',
+                'js': 'fas fa-file-code text-yellow-500',
+                'php': 'fas fa-file-code text-purple-600',
+                'py': 'fas fa-file-code text-blue-500',
+                'java': 'fas fa-file-code text-red-600',
+                'cpp': 'fas fa-file-code text-blue-600',
+                'c': 'fas fa-file-code text-blue-600',
+                'sql': 'fas fa-database text-indigo-500',
+                'json': 'fas fa-file-code text-green-600',
+                'xml': 'fas fa-file-code text-orange-400',
+            };
+            
+            return iconMap[extension] || 'fas fa-file text-gray-400';
+        }
+
+        // Function to get file description based on extension
+        function getFileDescription(filename) {
+            if (!filename) return 'File';
+            
+            const extension = filename.split('.').pop().toLowerCase();
+            const descriptionMap = {
+                'exe': 'Executable file',
+                'msi': 'Installer package',
+                'bat': 'Batch file',
+                'cmd': 'Command file',
+                'pdf': 'PDF document',
+                'doc': 'Word document',
+                'docx': 'Word document',
+                'xls': 'Excel spreadsheet',
+                'xlsx': 'Excel spreadsheet',
+                'ppt': 'PowerPoint presentation',
+                'pptx': 'PowerPoint presentation',
+                'zip': 'Archive file',
+                'rar': 'Archive file',
+                '7z': 'Archive file',
+                'tar': 'Archive file',
+                'gz': 'Compressed file',
+                'png': 'Image file',
+                'jpg': 'Image file',
+                'jpeg': 'Image file',
+                'gif': 'Animated image',
+                'bmp': 'Image file',
+                'svg': 'Vector image',
+                'mp4': 'Video file',
+                'avi': 'Video file',
+                'mov': 'Video file',
+                'wmv': 'Video file',
+                'mkv': 'Video file',
+                'mp3': 'Audio file',
+                'wav': 'Audio file',
+                'flac': 'Audio file',
+                'aac': 'Audio file',
+                'txt': 'Text file',
+                'rtf': 'Rich text file',
+                'html': 'Web page',
+                'htm': 'Web page',
+                'css': 'Stylesheet',
+                'js': 'JavaScript file',
+                'php': 'PHP script',
+                'py': 'Python script',
+                'java': 'Java source',
+                'cpp': 'C++ source',
+                'c': 'C source',
+                'sql': 'Database file',
+                'json': 'JSON data',
+                'xml': 'XML file',
+            };
+            
+            return descriptionMap[extension] || 'File';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize file icons and descriptions
+            document.querySelectorAll('.file-row').forEach(row => {
+                const filename = row.dataset.filename;
+                const fileIcon = row.querySelector('.file-icon');
+                const fileDescription = row.querySelector('.file-description');
+                
+                if (filename && fileIcon && fileDescription) {
+                    // Update icon
+                    fileIcon.className = `file-icon text-2xl ${getFileIcon(filename)}`;
+                    // Update description
+                    fileDescription.textContent = getFileDescription(filename);
+                }
+            });
+
+            // Add smooth hover effects for file rows
+            document.querySelectorAll('.file-row').forEach(row => {
+                row.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                });
+                
+                row.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+
+            // Existing code
+            const preloader = document.getElementById('preloader');
+            setTimeout(function() {
+                preloader.style.opacity = '0';
+                setTimeout(function() {
+                    preloader.style.display = 'none';
+                }, 500);
+            }, 1500);
+
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 100) {
+                    navbar.classList.add('shadow-lg');
+                } else {
+                    navbar.classList.remove('shadow-lg');
+                }
+            });
+
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Real-time clock
+            function updateClock() {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                document.getElementById('realtime-clock').textContent = `${hours}:${minutes}:${seconds}`;
+            }
+            updateClock();
+            setInterval(updateClock, 1000);
+        });
+    </script>
+</body>
+</html>
