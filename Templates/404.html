@@ -1,0 +1,316 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | Easy Share</title>
+    <link rel="shortcut icon" href="{% static 'Logo.png' %}" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+    rel="stylesheet"
+/>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Kaushan+Script&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f7ff',
+                            100: '#e0edff',
+                            200: '#b3d4ff',
+                            300: '#80b8ff',
+                            400: '#4d9bff',
+                            500: '#1a80ff',
+                            600: '#1466cc',
+                            700: '#0f4d99',
+                            800: '#0a3366',
+                            900: '#072033',
+                        },
+                        secondary: {
+                            50: '#f0faff',
+                            100: '#e0f3ff',
+                            200: '#b3e1ff',
+                            300: '#80cbff',
+                            400: '#4db4ff',
+                            500: '#1a9cff',
+                            600: '#147ccc',
+                            700: '#0f5f99',
+                            800: '#0a4266',
+                            900: '#073233',
+                        },
+                        accent: {
+                            50: '#f2f6ff',
+                            100: '#e6edff',
+                            200: '#c7d6ff',
+                            300: '#a3bcff',
+                            400: '#7a9cff',
+                            500: '#517cff',
+                            600: '#4163cc',
+                            700: '#314a99',
+                            800: '#213266',
+                            900: '#152033',
+                        },
+                        neutral: {
+                            50: '#fafafa',
+                            100: '#f5f5f5',
+                            200: '#e5e5e5',
+                            300: '#d4d4d4',
+                            400: '#a3a3a3',
+                            500: '#737373',
+                            600: '#525252',
+                            700: '#404040',
+                            800: '#262626',
+                            900: '#171717',
+                        }
+                    },
+                    fontFamily: {
+                        'sans': ['Space Grotesk', 'system-ui', 'sans-serif'],
+                        'script': ['Dancing Script', 'cursive'],
+                        'display': ['Kaushan Script', 'cursive'],
+                        'mono': ['JetBrains Mono', 'monospace'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                        'scale-in': 'scaleIn 0.5s ease-out',
+                        'float': 'float 3s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                        'bounce-slow': 'bounce 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(30px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        scaleIn: {
+                            '0%': { transform: 'scale(0.9)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 20px rgba(26, 128, 255, 0.3)' },
+                            '100%': { boxShadow: '0 0 30px rgba(26, 128, 255, 0.6)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #f0f7ff 0%, #f0faff 50%, #f2f6ff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-pattern {
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(26, 128, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(26, 156, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(81, 124, 255, 0.1) 0%, transparent 50%);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #1a80ff, #1466cc, #1a9cff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pattern-bg {
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(26, 128, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(26, 156, 255, 0.1) 0%, transparent 50%);
+        }
+
+        .nav-blur {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .floating-element {
+            position: absolute;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(2) { animation-delay: -2s; }
+        .floating-element:nth-child(3) { animation-delay: -4s; }
+
+        body {
+            background: linear-gradient(135deg, #f0f7ff 0%, #f0faff 25%, #f2f6ff 50%, #f0f7ff 75%, #f0faff 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .stats-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .error-404 {
+            font-size: 12rem;
+            line-height: 1;
+            text-shadow: 0 0 50px rgba(26, 128, 255, 0.5);
+        }
+
+        * {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" fill="%231a80ff" fill-opacity="0.3"/><circle cx="12" cy="12" r="3" fill="%231a80ff"/></svg>'), auto;
+        }
+
+        a, button, .cursor-pointer {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" fill="%231466cc" fill-opacity="0.4"/><circle cx="12" cy="12" r="4" fill="%231466cc"/></svg>'), pointer;
+        }
+
+        * {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-blur a:hover, button:hover {
+            transform: translateY(-2px) scale(1.05);
+            filter: drop-shadow(0 4px 8px rgba(26, 128, 255, 0.3));
+        }
+
+        @media (max-width: 768px) {
+            .error-404 {
+                font-size: 8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .error-404 {
+                font-size: 6rem;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans text-neutral-800 pattern-bg">
+    <nav class="fixed top-0 w-full z-50 nav-blur transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="{% url 'index_view' %}" class="flex items-center space-x-3 group">
+                    <img src="{% static 'Logo.png' %}" alt="Easy Share" class="h-12 transition-transform group-hover:scale-110">
+                    <span class="text-2xl font-bold text-gradient">Easy Share</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-8">
+                </div>
+                <a href="{% url "login_view" %}" class="text-primary-600 px-6 py-3 rounded-full font-medium hover:text-primary-700 transition-all duration-300 transform hover:scale-105">
+                    <i class="fas fa-user text-xl"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-gradient hero-pattern min-h-screen relative flex items-center justify-center overflow-hidden">
+        <!-- Floating Background Elements -->
+        <div class="floating-element top-20 left-10 w-20 h-20 bg-primary-200/30 rounded-full"></div>
+        <div class="floating-element top-40 right-20 w-16 h-16 bg-secondary-200/30 rounded-full"></div>
+        <div class="floating-element bottom-40 left-20 w-24 h-24 bg-accent-200/30 rounded-full"></div>
+        <div class="floating-element top-60 left-1/2 w-12 h-12 bg-primary-300/40 rounded-full"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 text-center py-32 relative z-10">
+            <div class="animate-fade-in">
+                <!-- 404 Error -->
+                <h1 class="font-display font-bold mb-8 text-gradient error-404">404</h1>
+                
+                <!-- Error Message -->
+                <h2 class="text-2xl lg:text-3xl text-neutral-700 mb-4 font-light">
+                    the first time i see you i feel so bad
+                </h2>
+                
+                <p class="text-xl text-neutral-600 mb-12 max-w-2xl mx-auto">
+                    The page you're looking for seems to have wandered off into the digital void.
+                </p>
+                
+                <!-- Stats Section -->
+                <div class="grid grid-cols-3 gap-4 mb-8 max-w-md mx-auto">
+                    <div class="stats-card rounded-2xl p-4 text-center">
+                        <div class="text-2xl font-bold text-primary-600">99%</div>
+                        <div class="text-sm text-neutral-600">Uptime</div>
+                    </div>
+                    <div class="stats-card rounded-2xl p-4 text-center">
+                        <div class="text-2xl font-bold text-secondary-600">99%</div>
+                        <div class="text-sm text-neutral-600">Speed Ratio</div>
+                    </div>
+                    <div class="stats-card rounded-2xl p-4 text-center">
+                        <div class="text-2xl font-bold text-accent-600">5GB</div>
+                        <div class="text-sm text-neutral-600">Max Size</div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-center space-x-4">
+                    <a href="{% url 'index_view' %}" class="bg-gradient-to-r from-primary-500 to-primary-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:from-primary-600 hover:to-primary-700 transition-all duration-300 transform hover:scale-105 shadow-xl animate-glow">
+                        <i class="fas fa-home mr-2"></i>
+                        Go Home
+                    </a>
+                    <a href="javascript:history.back()" class="bg-white/80 backdrop-blur-md text-primary-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-white transition-all duration-300 transform hover:scale-105 shadow-lg border border-primary-200">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Go Back
+                    </a>
+                </div>
+                
+                <!-- Illustration -->
+                <div class="mt-16 relative animate-scale-in">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-gradient-to-br from-primary-400/30 to-secondary-400/30 rounded-3xl transform rotate-6 animate-float"></div>
+                        <div class="relative bg-white p-6 rounded-3xl shadow-2xl max-w-lg mx-auto">
+                            <div class="text-8xl text-primary-200 mb-4">
+                                <i class="fas fa-ghost"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-neutral-700 mb-2">Lost in Space</h3>
+                            <p class="text-neutral-500">This page has drifted away from our servers.</p>
+                        </div>
+                    </div>
+                    <div class="absolute -top-8 -left-8 w-16 h-16 bg-secondary-100 rounded-full flex items-center justify-center animate-bounce-slow">
+                        <i class="fas fa-question text-secondary-600 text-xl"></i>
+                    </div>
+                    <div class="absolute -bottom-8 -right-8 w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center animate-float" style="animation-delay: 1s;">
+                        <i class="fas fa-search text-primary-600"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-white py-16 relative overflow-hidden border-t border-neutral-200">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+            <div class="text-center">
+                <a href="#" class="text-2xl font-display font-bold text-gradient">Powered By Pioneer Software</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 100) {
+                    navbar.classList.add('shadow-lg');
+                } else {
+                    navbar.classList.remove('shadow-lg');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

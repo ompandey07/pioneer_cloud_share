@@ -6,6 +6,14 @@ urlpatterns = [
     
      path('', views.index_view, name='index_view'), 
      path('admin/', views.admin_view, name='admin_view'),
+     path('login/', views.login_view, name='login_view'),
+     path('logout/', views.logout_view, name='logout_view'),
+
+
+     # Custom error handling
+     path('unauth/', views.custom_error_view, name='custom_error_view'),
+
+
           
 ]
 
